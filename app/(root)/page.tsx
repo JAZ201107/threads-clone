@@ -9,8 +9,6 @@ export default async function Home() {
     return null;
   }
 
-  console.log(res);
-
   return (
     <>
       <h1 className="head-text text-left">Home</h1>
