@@ -1,3 +1,4 @@
+import ThreadCard from "@/components/cards/ThreadCard";
 import { fetchPost } from "@/lib/actions/thread.actions";
 import { currentUser } from "@clerk/nextjs";
 
