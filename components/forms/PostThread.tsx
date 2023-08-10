@@ -20,6 +20,8 @@ import { Textarea } from "../ui/textarea";
 import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
 import { updateUser } from "@/lib/actions/user.actions";
+import { useOrganization } from "@clerk/nextjs";
+
 import { usePathname, useRouter } from "next/navigation";
 import path from "path";
 import { ThreadValidation } from "@/lib/validations/thread";
@@ -32,6 +34,7 @@ interface PostThreadProps {
 const PostThread: FunctionComponent<PostThreadProps> = ({ userId }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { organization } = useOrganization();
 
   const form = useForm<z.infer<typeof ThreadValidation>>({
     resolver: zodResolver(ThreadValidation),
@@ -42,12 +45,21 @@ const PostThread: FunctionComponent<PostThreadProps> = ({ userId }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
-    await createThread({
-      text: values.thread,
-      author: userId,
-      communityId: null,
-      path: pathname,
-    });
+    if (!organization) {
+      await createThread({
+        text: values.thread,
+        author: userId,
+        communityId: null,
+        path: pathname,
+      });
+    } else {
+      await createThread({
+        text: values.thread,
+        author: userId,
+        communityId: organization.id,
+        path: pathname,
+      });
+    }
 
     router.push("/");
   };

@@ -6,7 +6,6 @@ import { connectToDB } from "../mongoose";
 import Thread from "../models/thread.model";
 import { SortOrder } from "mongoose";
 import { FilterQuery } from "mongoose";
-import { Truculenta } from "next/font/google";
 
 interface Params {
   userId: string;
